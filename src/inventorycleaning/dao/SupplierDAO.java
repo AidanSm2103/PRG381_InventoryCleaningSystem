@@ -1,13 +1,35 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package inventorycleaning.dao;
+import inventorycleaning.model.Supplier;
+import java.util.List;
 
-/**
- *
- * @author spinn
- */
 public class SupplierDAO {
-    
+   public List<Supplier> getAll() {
+        // TODO: implement
+        return null;
+    }
+
+    public Supplier getById(int id) {
+        // TODO: implement
+        return null;
+    }
+
+    public boolean insert(Supplier s) {
+        // TODO: implement
+        return false;
+    }
+
+    public boolean update(Supplier s) {
+        // TODO: implement
+        return false;
+    }
+
+    public boolean delete(int id) {
+        // TODO: implement
+        return false;
+    }
+
+    public List<Supplier> search(String keyword) {
+        // TODO: implement
+        return null;
+    } 
 }

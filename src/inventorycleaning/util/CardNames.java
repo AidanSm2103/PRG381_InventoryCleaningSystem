@@ -1,5 +1,6 @@
 package inventorycleaning.util;
 
+// Stores card names to be used for navigation on UI
 public class CardNames {
     public static final String DASHBOARD = "DASHBOARD";
     public static final String MATERIALS = "MATERIALS";
