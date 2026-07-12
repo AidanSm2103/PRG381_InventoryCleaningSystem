@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package inventorycleaning.ui;
 
-/**
- *
- * @author spinn
- */
 public class LoginFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginFrame.class.getName());
@@ -56,6 +49,7 @@ public class LoginFrame extends javax.swing.JFrame {
         userField.addActionListener(this::userFieldActionPerformed);
 
         loginButton.setText("Login");
+        loginButton.addActionListener(this::loginButtonActionPerformed);
 
         registerButton.setText("Register");
 
@@ -125,6 +119,12 @@ public class LoginFrame extends javax.swing.JFrame {
     private void userFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_userFieldActionPerformed
+
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+        MainFrame mainFrame = new MainFrame();
+        mainFrame.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_loginButtonActionPerformed
 
     /**
      * @param args the command line arguments
