@@ -1,13 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package inventorycleaning.model;
 
-/**
- *
- * @author spinn
- */
 public class Supplier {
-    
+    private int id;
+    private String name;
+    private String contactNumber;
+    private String email;
+
+    public Supplier(int id, String name, String contactNumber, String email) {
+        this.id = id;
+        this.name = name;
+        this.contactNumber = contactNumber;
+        this.email = email;
+    }
+
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public String getContactNumber() { return contactNumber; }
+    public String getEmail() { return email; }
+
+    public void setName(String name) { this.name = name; }
+    public void setContactNumber(String contactNumber) { this.contactNumber = contactNumber; }
+    public void setEmail(String email) { this.email = email; }
 }
