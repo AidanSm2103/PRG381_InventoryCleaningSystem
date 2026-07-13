@@ -21,4 +21,9 @@ public class Supplier {
     public void setName(String name) { this.name = name; }
     public void setContactNumber(String contactNumber) { this.contactNumber = contactNumber; }
     public void setEmail(String email) { this.email = email; }
+    
+    @Override
+    public String toString(){
+        return String.format("%d,%s,%s,%s", id, name, contactNumber, email);
+    }
 }
