@@ -1,11 +1,12 @@
 package inventorycleaning.dao;
 import inventorycleaning.model.Cleaner;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CleanerDAO {
     public List<Cleaner> getAll() {
         // TODO: implement
-        return null;
+        return new ArrayList<>();
     }
 
     public Cleaner getById(int id) {
@@ -30,6 +31,6 @@ public class CleanerDAO {
 
     public List<Cleaner> search(String keyword) {
         // TODO: implement
-        return null;
+        return new ArrayList<>();
     }
 }
