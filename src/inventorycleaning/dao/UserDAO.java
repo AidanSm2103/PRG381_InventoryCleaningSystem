@@ -10,11 +10,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO {
+    // Password hashing
     private String hashPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes());
             StringBuilder sb = new StringBuilder();
+            
             for (byte b : hash) {
                 sb.append(String.format("%02x", b));
             }
@@ -24,8 +26,10 @@ public class UserDAO {
         }
     }
     
+    // Finding a user by their username
     public User getByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
+        
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
@@ -45,9 +49,10 @@ public class UserDAO {
         return null;
     }
 
+    // Inserting a user 
     public boolean insert(User user) {
-        // TODO: implement, used by Register, remember to check for duplicate username/email first
         String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
+        
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getUsername());
@@ -60,8 +65,8 @@ public class UserDAO {
         }
     }
 
+    // Validating login details
     public boolean validateLogin(String username, String password) {
-        // TODO: implement, compare against stored password
         User user = getByUsername(username);
         if (user == null) {
             return false;
@@ -69,6 +74,7 @@ public class UserDAO {
         return user.getPassword().equals(hashPassword(password));
     }
 
+    // Checks if a user exists to avoid duplicates
     public boolean usernameExists(String username) {
         return getByUsername(username) != null;
     }

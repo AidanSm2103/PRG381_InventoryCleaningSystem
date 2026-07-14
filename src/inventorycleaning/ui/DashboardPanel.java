@@ -11,6 +11,7 @@ public class DashboardPanel extends javax.swing.JPanel {
         loadDashboardData();
     }
     
+    // Loading and displaying of dashboard data
     private void loadDashboardData() {
     MaterialDAO materialDAO = new MaterialDAO();
     CleanerDAO cleanerDAO = new CleanerDAO();

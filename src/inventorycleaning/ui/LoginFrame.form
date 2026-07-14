@@ -66,14 +66,12 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="errorLabel" min="-2" pref="37" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="userLabel" min="-2" pref="71" max="-2" attributes="0"/>
-                                  <Component id="passwordLabel" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
-                                  <Component id="userField" alignment="0" pref="176" max="32767" attributes="0"/>
-                                  <Component id="passwordField" alignment="0" max="32767" attributes="0"/>
-                              </Group>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="userLabel" min="-2" pref="71" max="-2" attributes="0"/>
+                              <Component id="passwordLabel" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
+                              <Component id="userField" alignment="0" pref="176" max="32767" attributes="0"/>
+                              <Component id="passwordField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="errorLabel" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -97,12 +95,12 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="passwordField" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="errorLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                  <Component id="errorLabel" min="-2" pref="15" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="loginButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="registerButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="41" max="32767" attributes="0"/>
+                  <EmptySpace pref="33" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

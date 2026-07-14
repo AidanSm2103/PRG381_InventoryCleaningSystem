@@ -7,8 +7,6 @@ import javax.swing.JFrame;
 
 public class RegisterDialog extends javax.swing.JDialog {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegisterDialog.class.getName());
-
     public RegisterDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -120,31 +118,37 @@ public class RegisterDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Button for submitting registration
     private void submitRegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitRegisterButtonActionPerformed
         String username = newUsernameField.getText().trim();
         String password = new String(newPasswordField.getPassword());
         String confirmPassword = new String(confirmPasswordField.getPassword());
         String role = (String) roleComboBox.getSelectedItem();
 
+        // Checks for empty fields
         if (username.isEmpty() || password.isEmpty()) {
             registerErrorLabel.setText("Username and password are required");
             return;
         }
 
+        // Checks if passwords match
         if (!password.equals(confirmPassword)) {
             registerErrorLabel.setText("Passwords do not match");
             return;
         }
 
         UserDAO userDAO = new UserDAO();
+        // Checks for existing usernames in database
         if (userDAO.usernameExists(username)) {
             registerErrorLabel.setText("Username already taken");
             return;
         }
 
+        // Adds user if criteria is successful
         User newUser = new User(0, username, password, role);
         boolean success = userDAO.insert(newUser);
 
+        // Error checking for successful/failed registration
         if (success) {
             javax.swing.JOptionPane.showMessageDialog(this,
                 "Registration successful. You can now log in.");
@@ -154,6 +158,7 @@ public class RegisterDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_submitRegisterButtonActionPerformed
 
+    // Button for canceling registration
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
