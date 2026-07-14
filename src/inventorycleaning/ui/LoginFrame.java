@@ -1,8 +1,12 @@
 package inventorycleaning.ui;
 
 import inventorycleaning.dao.UserDAO;
+import inventorycleaning.model.User;
 
 public class LoginFrame extends javax.swing.JFrame {
+
+private static final java.util.logging.Logger logger = 
+    java.util.logging.Logger.getLogger(LoginFrame.class.getName());
     
     public LoginFrame() {
         initComponents();
@@ -116,14 +120,18 @@ public class LoginFrame extends javax.swing.JFrame {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
     String username = userField.getText();
     String password = new String(passwordField.getPassword());
-    
-    // Validates login details before proceeding to login
+
+    // Validates user login
     UserDAO userDAO = new UserDAO();
     if (userDAO.validateLogin(username, password)) {
-        MainFrame mainFrame = new MainFrame();
+        User loggedInUser = userDAO.getByUsername(username);
+        logger.info("User '" + username + "' logged in successfully");
+
+        MainFrame mainFrame = new MainFrame(loggedInUser);
         mainFrame.setVisible(true);
         this.dispose();
     } else {
+        logger.warning("Failed login attempt for username '" + username + "'");
         errorLabel.setText("Invalid username or password");
     }
     }//GEN-LAST:event_loginButtonActionPerformed

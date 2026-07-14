@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 
 public class RegisterDialog extends javax.swing.JDialog {
     
+    private static final java.util.logging.Logger logger = 
+    java.util.logging.Logger.getLogger(RegisterDialog.class.getName());
+    
     public RegisterDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -150,12 +153,14 @@ public class RegisterDialog extends javax.swing.JDialog {
 
         // Error checking for successful/failed registration
         if (success) {
+            logger.info("New user registered: '" + username + "' with role '" + role + "'");
             javax.swing.JOptionPane.showMessageDialog(this,
-                "Registration successful. You can now log in.");
+            "Registration successful. You can now log in.");
             this.dispose();
         } else {
+            logger.warning("Registration failed for username '" + username + "'");
             registerErrorLabel.setText("Registration failed, please try again");
-        }
+}
     }//GEN-LAST:event_submitRegisterButtonActionPerformed
 
     // Button for canceling registration

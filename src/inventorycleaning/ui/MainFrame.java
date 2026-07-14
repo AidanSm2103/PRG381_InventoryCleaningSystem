@@ -1,18 +1,34 @@
 package inventorycleaning.ui;
 import java.awt.CardLayout;
 import inventorycleaning.util.CardNames;
+import inventorycleaning.model.User;
 
 public class MainFrame extends javax.swing.JFrame {
 
-    public MainFrame() {
+    // The currently authenticated user, passed in from LoginFrame
+     private User loggedInUser;
+     
+    public MainFrame(User user) {
+        this.loggedInUser = user;
         initComponents();
+        
+        // Card layout set up for navigation
         contentPanel.setLayout(new CardLayout());
         contentPanel.add(new DashboardPanel(), CardNames.DASHBOARD);
         contentPanel.add(new MaterialsPanel(), CardNames.MATERIALS);
         contentPanel.add(new SuppliersPanel(), CardNames.SUPPLIERS);
         contentPanel.add(new CleanersPanel(), CardNames.CLEANERS);
         contentPanel.add(new IssuancePanel(), CardNames.STOCK_ISSUANCE);
-        contentPanel.add(new ReportsPanel(), CardNames.REPORTS);
+        contentPanel.add(new ReportsPanel(loggedInUser), CardNames.REPORTS);
+        
+        applyRolePermissions();
+    }
+    
+    // Disables UI elements the current user's role shouldn't have access to
+    private void applyRolePermissions() {
+        boolean isSupervisor = "Supervisor".equals(loggedInUser.getRole());
+        reportsButton.setEnabled(isSupervisor);
+        reportsButton.setToolTipText(isSupervisor ? null : "Supervisor access only");
     }
 
     @SuppressWarnings("unchecked")
@@ -121,8 +137,15 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Nav button for reports screen
     private void reportsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportsButtonActionPerformed
-        CardLayout cl = (CardLayout) contentPanel.getLayout();
-        cl.show(contentPanel, CardNames.REPORTS);
+        // Checks if user is a Supervisor before granting access
+        if (!"Supervisor".equals(loggedInUser.getRole())) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "You do not have permission to view this screen.");
+        return;
+    }
+        
+    CardLayout cl = (CardLayout) contentPanel.getLayout();
+    cl.show(contentPanel, CardNames.REPORTS);
     }//GEN-LAST:event_reportsButtonActionPerformed
 
     // Button for logging out
@@ -143,9 +166,12 @@ public class MainFrame extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_logoutButtonActionPerformed
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> new MainFrame().setVisible(true));
-    }
+    /*public static void main(String args[]) {
+         java.awt.EventQueue.invokeLater(() -> {
+            User testUser = new User(0, "testuser", "test", "Supervisor");
+            new MainFrame(testUser).setVisible(true);
+    });
+    }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cleanersButton;
