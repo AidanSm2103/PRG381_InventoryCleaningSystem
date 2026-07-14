@@ -1,11 +1,12 @@
 package inventorycleaning.dao;
 import inventorycleaning.model.Material;
 import java.util.List;
+import java.util.ArrayList;
 
 public class MaterialDAO {
     public List<Material> getAll() {
         // TODO: implement SELECT * FROM materials
-        return null;
+        return new ArrayList<>();
     }
 
     public Material getById(int id) {
@@ -30,11 +31,11 @@ public class MaterialDAO {
 
     public List<Material> search(String keyword) {
         // TODO: implement SELECT * FROM materials WHERE name LIKE ?
-        return null;
+        return new ArrayList<>();
     }
 
     public List<Material> getLowStock() {
         // TODO: implement SELECT * FROM materials WHERE quantity <= reorder_level
-        return null;
+        return new ArrayList<>();
     }
 }

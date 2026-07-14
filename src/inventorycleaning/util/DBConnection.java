@@ -9,11 +9,6 @@ public class DBConnection {
     private static final String PASSWORD = "admin";
 
     public static Connection getConnection() throws SQLException {
-        try {
-            Class.forName("org.apache.derby.jdbc.ClientAutoloadedDriver");
-        } catch (ClassNotFoundException e) {
-            throw new SQLException("Derby driver not found", e);
-        }
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
