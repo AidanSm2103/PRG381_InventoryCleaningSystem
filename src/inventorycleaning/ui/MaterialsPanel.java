@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package inventorycleaning.ui;
+import inventorycleaning.dao.MaterialDAO;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -49,12 +51,15 @@ public class MaterialsPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(materialsTable);
 
         searchMaterialsButton.setText("Search");
+        searchMaterialsButton.addActionListener(this::searchMaterialsButtonActionPerformed);
 
         addMaterialsButton.setText("Add");
 
         editMaterialsButton.setText("Edit");
+        editMaterialsButton.addActionListener(this::editMaterialsButtonActionPerformed);
 
         deleteMaterialsButton.setText("Delete");
+        deleteMaterialsButton.addActionListener(this::deleteMaterialsButtonActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -114,6 +119,25 @@ public class MaterialsPanel extends javax.swing.JPanel {
                     .addContainerGap(12, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void searchMaterialsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchMaterialsButtonActionPerformed
+        MaterialDAO dao = new MaterialDAO();
+        
+        DefaultTableModel model = (DefaultTableModel) materialsTable.getModel();
+        for(String[] row : dao.search(searchMaterialsField.getText())){
+            model.addRow(row);
+        }
+    }//GEN-LAST:event_searchMaterialsButtonActionPerformed
+
+    private void editMaterialsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMaterialsButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editMaterialsButtonActionPerformed
+
+    private void deleteMaterialsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMaterialsButtonActionPerformed
+        MaterialDAO dao = new MaterialDAO();
+        
+        dao.delete(searchMaterialsField.getText());
+    }//GEN-LAST:event_deleteMaterialsButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
