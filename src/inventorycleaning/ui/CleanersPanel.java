@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package inventorycleaning.ui;
+import javax.swing.table.DefaultTableModel;
+import inventorycleaning.dao.CleanerDAO;
+import inventorycleaning.model.Cleaner;
+import java.util.List;
 
 /**
  *
@@ -15,8 +19,34 @@ public class CleanersPanel extends javax.swing.JPanel {
      */
     public CleanersPanel() {
         initComponents();
-    }
 
+        loadCleanersToTable(); 
+        
+        addCleanersButton.addActionListener(this::addCleanersButtonActionPerformed);
+        editCleanersButton.addActionListener(this::editCleanersButtonActionPerformed);
+        deleteCleanersButton.addActionListener(this::deleteCleanersButtonActionPerformed);
+    }
+    
+    // Custom method to load data from the database into the JTable
+    private void loadCleanersToTable() {
+        DefaultTableModel model = (DefaultTableModel) cleanersTable.getModel();
+        
+        model.setRowCount(0);
+        
+        model.setColumnIdentifiers(new Object[]{"ID", "Name", "Department"}); 
+        
+        CleanerDAO dao = new CleanerDAO();
+        List<Cleaner> cleanersList = dao.getAll();
+        
+        for (Cleaner c : cleanersList) {
+            model.addRow(new Object[]{
+                c.getId(), 
+                c.getName(), 
+                c.getDepartment()
+            });
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -51,10 +81,13 @@ public class CleanersPanel extends javax.swing.JPanel {
         searchCleanersButton.setText("Search");
 
         addCleanersButton.setText("Add");
+        addCleanersButton.addActionListener(this::addCleanersButtonActionPerformed);
 
         editCleanersButton.setText("Edit");
+        editCleanersButton.addActionListener(this::editCleanersButtonActionPerformed);
 
         deleteCleanersButton.setText("Delete");
+        deleteCleanersButton.addActionListener(this::deleteCleanersButtonActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -110,6 +143,112 @@ public class CleanersPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addCleanersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCleanersButtonActionPerformed
+            //Prompts the user for the cleaner's name 
+            String name = javax.swing.JOptionPane.showInputDialog(this, "Enter Cleaner's Name:");
+    
+            if (name == null || name.trim().isEmpty()) {
+                return; 
+            }
+    
+            //Prompts the user for the department name
+            String department = javax.swing.JOptionPane.showInputDialog(this, "Enter Department:");
+            if (department == null) {
+                department = ""; 
+            }
+    
+            Cleaner newCleaner = new Cleaner(0, name.trim(), department.trim());
+    
+            //Calls insert method 
+            CleanerDAO dao = new CleanerDAO();
+            boolean success = dao.insert(newCleaner);
+    
+            if (success) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Cleaner added successfully!");
+                loadCleanersToTable();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error: Could not add cleaner to database.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            } 
+    }//GEN-LAST:event_addCleanersButtonActionPerformed
+
+    private void editCleanersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCleanersButtonActionPerformed
+            try {
+                int selectedRow = cleanersTable.getSelectedRow();
+        
+                if (selectedRow == -1) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Please select a cleaner to edit from the table first.", "No Selection", javax.swing.JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+        
+            //Extracts the data from selected row 
+            int id = (int) cleanersTable.getValueAt(selectedRow, 0);
+            String currentName = (String) cleanersTable.getValueAt(selectedRow, 1);
+            String currentDepartment = (String) cleanersTable.getValueAt(selectedRow, 2);
+        
+            //Prompt user for new values
+            String newName = javax.swing.JOptionPane.showInputDialog(this, "Edit Cleaner's Name:", currentName);
+            if (newName == null || newName.trim().isEmpty()) {
+                return; // Canceled or left blank
+            }
+        
+            String newDepartment = javax.swing.JOptionPane.showInputDialog(this, "Edit Department:", currentDepartment);
+            if (newDepartment == null) {
+                newDepartment = "";
+            }
+        
+            Cleaner updatedCleaner = new Cleaner(id, newName.trim(), newDepartment.trim());
+        
+            //Calls update method
+            CleanerDAO dao = new CleanerDAO();
+            boolean success = dao.update(updatedCleaner);
+        
+            if (success) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Cleaner updated successfully!");
+                loadCleanersToTable();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error: Could not update cleaner in database.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "An error occurred: " + e.getMessage(), "Exception", javax.swing.JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }        
+    }//GEN-LAST:event_editCleanersButtonActionPerformed
+
+    private void deleteCleanersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteCleanersButtonActionPerformed
+        //Check if a row is selected
+        int selectedRow = cleanersTable.getSelectedRow();
+    
+            if (selectedRow == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a cleaner to delete from the table first.", "No Selection", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+    
+        int id = (int) cleanersTable.getValueAt(selectedRow, 0);
+        String name = (String) cleanersTable.getValueAt(selectedRow, 1);
+    
+        //Asks the user for confirmation before permanently deleting
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(
+            this, 
+            "Are you sure you want to delete cleaner: " + name + "?", 
+            "Confirm Deletion", 
+            javax.swing.JOptionPane.YES_NO_OPTION
+        );  
+    
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            //Calls delete method using the ID
+            CleanerDAO dao = new CleanerDAO();
+            boolean success = dao.delete(id); 
+        
+            if (success) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Cleaner deleted successfully!");
+                //Refreshes the table
+                loadCleanersToTable();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error: Could not delete cleaner from database.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        } 
+    }//GEN-LAST:event_deleteCleanersButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
