@@ -66,13 +66,12 @@ public class MaterialDAO {
         return output;
     }
 
-    public boolean update(Material m, String id) {
-        // TODO: implement UPDATE materials SET ... WHERE id = ?
+    public boolean update(String id, String choice, String update) {
         boolean output = false;
         
         try {
             Connection con = DBConnection.getConnection();
-            String query = "UPDATE materials SET " + m + " WHERE id = " + id;
+            String query = "UPDATE materials SET " + choice + " = " + update + " WHERE id = " + id;
             output = con.createStatement().execute(query);
         } catch(SQLException ex) {
             ex.printStackTrace();
