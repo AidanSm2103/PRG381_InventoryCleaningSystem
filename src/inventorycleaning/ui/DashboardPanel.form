@@ -113,7 +113,7 @@
                 <Property name="text" type="java.lang.String" value="Issuances Today"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="totalMaterialsCountLabel">
+            <Component class="javax.swing.JLabel" name="totalMaterialsCounterLabel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="14" style="1"/>

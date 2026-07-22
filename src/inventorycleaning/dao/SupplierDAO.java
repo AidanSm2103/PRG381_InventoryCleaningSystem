@@ -2,6 +2,7 @@ package inventorycleaning.dao;
 
 import inventorycleaning.DBConnection;
 import inventorycleaning.model.Supplier;
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -1,16 +1,17 @@
 package inventorycleaning.dao;
 import inventorycleaning.model.Issuance;
+import java.util.ArrayList;
 import java.util.List;
 
 public class IssuanceDAO {
     public List<Issuance> getAll() {
         // TODO: implement
-        return null;
+        return new ArrayList<>();
     }
 
     public List<Issuance> getRecent(int limit) {
         // TODO: implement — for Dashboard's recent issuances table, ORDER BY date DESC LIMIT ?
-        return null;
+        return new ArrayList<>();
     }
 
     public int getTodayCount() {
@@ -25,11 +26,11 @@ public class IssuanceDAO {
 
     public List<Issuance> getByMaterial(int materialId) {
         // TODO: implement — feeds the Material Usage report
-        return null;
+        return new ArrayList<>();
     }
 
     public List<Issuance> getByCleaner(int cleanerId) {
         // TODO: implement
-        return null;
+        return new ArrayList<>();
     }
 }
