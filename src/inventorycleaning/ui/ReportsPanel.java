@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package inventorycleaning.ui;
+import inventorycleaning.dao.IssuanceDAO;
+import inventorycleaning.dao.MaterialDAO;
+import inventorycleaning.model.Issuance;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -10,12 +14,85 @@ package inventorycleaning.ui;
  */
 public class ReportsPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ReportsPanel
-     */
+   private final MaterialDAO materialDAO;
+   private final IssuanceDAO issuanceDAO;
+
+
     public ReportsPanel() {
         initComponents();
+         materialDAO = new MaterialDAO();
+    issuanceDAO = new IssuanceDAO();
+
+    setupTables();
+
+    loadInventoryReport();
+
+    loadLowStockReport();
+
+    loadIssuanceHistoryReport();
+
+    loadMaterialUsageReport();
+
     }
+    
+    private void setupTables() {
+
+    inventoryTable.setModel(
+            new DefaultTableModel(
+                    new Object[]{
+                            "ID",
+                            "Material",
+                            "Quantity",
+                            "Reorder Level"
+                    },0));
+
+    lowStockTable.setModel(
+            new DefaultTableModel(
+                    new Object[]{
+                            "ID",
+                            "Material",
+                            "Quantity",
+                            "Reorder Level"
+                    },0));
+
+    issuanceHistoryTable.setModel(
+            new DefaultTableModel(
+                    new Object[]{
+                            "ID",
+                            "Material ID",
+                            "Cleaner ID",
+                            "Quantity",
+                            "Date Issued"
+                    },0));
+
+    materialUsageTable.setModel(
+            new DefaultTableModel(
+                    new Object[]{
+                            "Material ID",
+                            "Total Issued"
+                    },0));
+
+}
+    
+    private void clearTable(DefaultTableModel model){
+
+    model.setRowCount(0);
+
+}
+    
+    public void refreshReports(){
+
+    loadInventoryReport();
+
+    loadLowStockReport();
+
+    loadIssuanceHistoryReport();
+
+    loadMaterialUsageReport();
+
+}
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
