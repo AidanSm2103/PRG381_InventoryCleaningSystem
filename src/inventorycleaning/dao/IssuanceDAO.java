@@ -1,11 +1,44 @@
 package inventorycleaning.dao;
 import inventorycleaning.model.Issuance;
+import inventorycleaning.util.DBConnection;
+
+import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import java.util.List;
 
 public class IssuanceDAO {
+    private final MaterialDAO materialDAO = new MaterialDAO();
     public List<Issuance> getAll() {
-        // TODO: implement
-        return null;
+        List<Issuance> issuances = new ArrayList<>();
+
+        String sql = "SELECT * FROM issuances ORDER BY date_issued DESC";
+
+        try (
+                Connection con = DBConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()
+        ) {
+
+            while (rs.next()) {
+
+                issuances.add(new Issuance(
+                        rs.getInt("id"),
+                        rs.getInt("material_id"),
+                        rs.getInt("cleaner_id"),
+                        rs.getInt("quantity"),
+                        rs.getDate("date_issued").toLocalDate()
+                ));
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return issuances;
     }
 
     public List<Issuance> getRecent(int limit) {
