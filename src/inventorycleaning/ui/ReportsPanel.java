@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package inventorycleaning.ui;
 import inventorycleaning.dao.IssuanceDAO;
 import inventorycleaning.dao.MaterialDAO;
@@ -10,10 +6,6 @@ import inventorycleaning.model.Material;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author spinn
- */
 public class ReportsPanel extends javax.swing.JPanel {
 
    private final MaterialDAO materialDAO;
@@ -21,6 +13,10 @@ public class ReportsPanel extends javax.swing.JPanel {
 
 
     public ReportsPanel() {
+    private User loggedInUser;
+    
+    public ReportsPanel(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
         initComponents();
          materialDAO = new MaterialDAO();
     issuanceDAO = new IssuanceDAO();

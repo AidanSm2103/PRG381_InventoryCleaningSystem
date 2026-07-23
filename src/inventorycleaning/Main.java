@@ -1,5 +1,8 @@
 package inventorycleaning;
 import inventorycleaning.ui.LoginFrame;
+import java.sql.SQLException;
+import inventorycleaning.dao.SupplierDAO;
+import inventorycleaning.model.Supplier;
 
 public class Main {
     public static void main(String[] args) {

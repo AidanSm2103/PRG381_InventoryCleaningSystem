@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package inventorycleaning.ui;
+import inventorycleaning.dao.MaterialDAO;
+import inventorycleaning.model.Material;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -49,12 +53,16 @@ public class MaterialsPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(materialsTable);
 
         searchMaterialsButton.setText("Search");
+        searchMaterialsButton.addActionListener(this::searchMaterialsButtonActionPerformed);
 
         addMaterialsButton.setText("Add");
+        addMaterialsButton.addActionListener(this::addMaterialsButtonActionPerformed);
 
         editMaterialsButton.setText("Edit");
+        editMaterialsButton.addActionListener(this::editMaterialsButtonActionPerformed);
 
         deleteMaterialsButton.setText("Delete");
+        deleteMaterialsButton.addActionListener(this::deleteMaterialsButtonActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -114,6 +122,46 @@ public class MaterialsPanel extends javax.swing.JPanel {
                     .addContainerGap(12, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void searchMaterialsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchMaterialsButtonActionPerformed
+        MaterialDAO dao = new MaterialDAO();
+        
+        DefaultTableModel model = (DefaultTableModel) materialsTable.getModel();
+        for(String[] row : dao.search(searchMaterialsField.getText())){
+            model.addRow(row);
+        }
+    }//GEN-LAST:event_searchMaterialsButtonActionPerformed
+
+    private void editMaterialsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMaterialsButtonActionPerformed
+        MaterialDAO dao = new MaterialDAO();
+        
+        String id = JOptionPane.showInputDialog("Enter the ID of the material you want to update:");
+        String choice = JOptionPane.showInputDialog("What would you like to update? (ID/Name/Quantity/Reorder Level)");
+        String update = JOptionPane.showInputDialog("Enter the new value for the " + choice + ":");
+        
+        dao.update(id, choice, update);
+    }//GEN-LAST:event_editMaterialsButtonActionPerformed
+
+    private void deleteMaterialsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMaterialsButtonActionPerformed
+        MaterialDAO dao = new MaterialDAO();
+        
+        String id = JOptionPane.showInputDialog("Enter the ID of the material you want to delete:");
+        
+        dao.delete(id);
+    }//GEN-LAST:event_deleteMaterialsButtonActionPerformed
+
+    private void addMaterialsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMaterialsButtonActionPerformed
+        MaterialDAO dao = new MaterialDAO();
+        
+        int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the ID of the new material:"));
+        String name = JOptionPane.showInputDialog("Enter the name of the new material:");
+        int quantity = Integer.parseInt(JOptionPane.showInputDialog("Enter the quantity of the new material:"));
+        int reorder_level = Integer.parseInt(JOptionPane.showInputDialog("Enter the reorder level of the new material:"));
+        
+        Material material = new Material(id, name, quantity, reorder_level);
+        
+        dao.insert(material);
+    }//GEN-LAST:event_addMaterialsButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
