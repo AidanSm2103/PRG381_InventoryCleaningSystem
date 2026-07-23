@@ -1,5 +1,6 @@
 package inventorycleaning.dao;
 import inventorycleaning.model.Issuance;
+import inventorycleaning.model.Material;
 import inventorycleaning.util.DBConnection;
 
 import java.util.ArrayList;
@@ -104,6 +105,88 @@ public class IssuanceDAO {
 
     public boolean insert(Issuance issuance) {
         // TODO: implement — also responsible for triggering stock deduction via MaterialDAO
+       Material material =
+                materialDAO.getById(issuance.getMaterialId());
+
+        if (material == null) {
+            System.out.println("Material not found.");
+            return false;
+        }
+
+        if (issuance.getQuantity() <= 0) {
+            System.out.println("Quantity must be greater than zero.");
+            return false;
+        }
+
+        if (issuance.getQuantity() > material.getQuantity()) {
+            System.out.println("Not enough stock available.");
+            return false;
+        }
+
+        Connection con = null;
+
+        try {
+
+            con = DBConnection.getConnection();
+            con.setAutoCommit(false);
+
+            String insertSql =
+                    "INSERT INTO issuances(material_id, cleaner_id, quantity, date_issued) VALUES (?,?,?,?)";
+
+            PreparedStatement insert =
+                    con.prepareStatement(insertSql);
+
+            insert.setInt(1, issuance.getMaterialId());
+            insert.setInt(2, issuance.getCleanerId());
+            insert.setInt(3, issuance.getQuantity());
+            insert.setDate(4, Date.valueOf(issuance.getDateIssued()));
+
+            insert.executeUpdate();
+
+            int remainingStock =
+                    material.getQuantity() - issuance.getQuantity();
+
+            String updateSql =
+                    "UPDATE materials SET quantity = ? WHERE id = ?";
+
+            PreparedStatement update =
+                    con.prepareStatement(updateSql);
+
+            update.setInt(1, remainingStock);
+            update.setInt(2, material.getId());
+
+            update.executeUpdate();
+
+            con.commit();
+
+            return true;
+
+        } catch (SQLException ex) {
+
+            ex.printStackTrace();
+
+            try {
+
+                if (con != null) {
+                    con.rollback();
+                }
+
+            } catch (SQLException ignored) {
+            }
+
+        } finally {
+
+            try {
+
+                if (con != null) {
+                    con.setAutoCommit(true);
+                    con.close();
+                }
+
+            } catch (SQLException ignored) {
+            }
+        }
+
         return false;
     }
 
