@@ -253,6 +253,7 @@ public class IssuancePanel extends javax.swing.JPanel {
     }
 
 }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -272,7 +273,7 @@ public class IssuancePanel extends javax.swing.JPanel {
         qtyLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         issuanceTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        issueButton = new javax.swing.JButton();
 
         materialBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -341,8 +342,9 @@ public class IssuancePanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("IssueStock");
-        jButton1.setName("issueButton"); // NOI18N
+        issueButton.setText("IssueStock");
+        issueButton.setName("issueButton"); // NOI18N
+        issueButton.addActionListener(this::issueButtonActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -350,7 +352,7 @@ public class IssuancePanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(224, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(issueButton, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(199, 199, 199))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -362,7 +364,7 @@ public class IssuancePanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(414, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(issueButton)
                 .addGap(16, 16, 16))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -372,12 +374,18 @@ public class IssuancePanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void issueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_issueButtonActionPerformed
+        // TODO add your handling code here:
+        //issue stock button 
+        issueStock();
+    }//GEN-LAST:event_issueButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cleanerBox;
     private javax.swing.JLabel cleanerLabel;
     private javax.swing.JTable issuanceTable;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton issueButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox<String> materialBox;
