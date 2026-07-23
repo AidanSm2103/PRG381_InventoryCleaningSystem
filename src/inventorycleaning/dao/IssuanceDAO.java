@@ -225,7 +225,35 @@ public class IssuanceDAO {
     }
 
     public List<Issuance> getByCleaner(int cleanerId) {
-        // TODO: implement
-        return null;
+        List<Issuance> issuances = new ArrayList<>();
+
+        String sql =
+                "SELECT * FROM issuances WHERE cleaner_id = ? ORDER BY date_issued DESC";
+
+        try (
+                Connection con = DBConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, cleanerId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                issuances.add(new Issuance(
+                        rs.getInt("id"),
+                        rs.getInt("material_id"),
+                        rs.getInt("cleaner_id"),
+                        rs.getInt("quantity"),
+                        rs.getDate("date_issued").toLocalDate()
+                ));
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return issuances;
     }
 }
