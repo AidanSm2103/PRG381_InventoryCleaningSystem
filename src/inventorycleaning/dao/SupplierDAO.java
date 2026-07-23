@@ -1,6 +1,6 @@
 package inventorycleaning.dao;
 
-import inventorycleaning.DBConnection;
+import inventorycleaning.util.DBConnection;
 import inventorycleaning.model.Supplier;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class SupplierDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 suppliers.add(new Supplier(
-                        rs.getInt("supplier_id"),
+                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("contact_number"),
                         rs.getString("email")
@@ -41,7 +41,7 @@ public class SupplierDAO {
         Supplier s = null;
         String sql = """
             SELECT * FROM suppliers WHERE
-            supplier_id = ? ORDER BY supplier_id
+            id = ? ORDER BY id
             """;
         try (Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);) {
@@ -49,7 +49,7 @@ public class SupplierDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 s = new Supplier(
-                        rs.getInt("supplier_id"),
+                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("contact_number"),
                         rs.getString("email")
@@ -90,7 +90,7 @@ public class SupplierDAO {
         String sql = """
                      UPDATE suppliers SET
                       name = ?, contact_number = ?, email = ?
-                      WHERE supplier_id = ?
+                      WHERE id = ?
                      """;
         try (Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);) {
@@ -100,7 +100,9 @@ public class SupplierDAO {
             ps.setInt(4, s.getId());
             ps.executeUpdate();
             System.out.println("Supplier updated");
-            return true;
+            int rowsAffected = ps.executeUpdate();
+            System.out.println("Rows updated: " + rowsAffected);
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -111,7 +113,7 @@ public class SupplierDAO {
         // FIXME: review
         String sql = """
                      DELETE FROM suppliers
-                      WHERE supplier_id = ?
+                      WHERE id = ?
                      """;
         try (Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);) {
@@ -143,7 +145,7 @@ public class SupplierDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 suppliers.add(new Supplier(
-                        rs.getInt("supplier_id"),
+                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("contact_number"),
                         rs.getString("email")
