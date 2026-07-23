@@ -3,6 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package inventorycleaning.ui;
+import inventorycleaning.dao.CleanerDAO;
+import inventorycleaning.dao.IssuanceDAO;
+import inventorycleaning.dao.MaterialDAO;
+
+import inventorycleaning.model.Cleaner;
+import inventorycleaning.model.Issuance;
+import inventorycleaning.model.Material;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -10,12 +20,45 @@ package inventorycleaning.ui;
  */
 public class IssuancePanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form IssuancePanel
-     */
+    private final MaterialDAO materialDAO;
+    private final CleanerDAO cleanerDAO;
+    private final IssuanceDAO issuanceDAO;
+    
+    
     public IssuancePanel() {
         initComponents();
+        
+        materialDAO = new MaterialDAO();
+        cleanerDAO = new CleanerDAO();
+        issuanceDAO = new IssuanceDAO();
+
+        qtySpinner.setModel(
+                new SpinnerNumberModel(1,1,1000,1));
+        
+        setupTable();
+
+        loadMaterials();
+
+        loadCleaners();
+
+        loadIssuanceHistory();
     }
+    private void setupTable(){
+
+    DefaultTableModel model =
+            new DefaultTableModel();
+
+    model.addColumn("ID");
+    model.addColumn("Material ID");
+    model.addColumn("Cleaner ID");
+    model.addColumn("Quantity");
+    model.addColumn("Date");
+
+    issuanceTable.setModel(model);
+
+}
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,6 +78,7 @@ public class IssuancePanel extends javax.swing.JPanel {
         qtyLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         issuanceTable = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         materialBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -103,25 +147,34 @@ public class IssuancePanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jButton1.setText("IssueStock");
+        jButton1.setName("issueButton"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 387, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(224, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(199, 199, 199))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 96, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 97, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 371, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(414, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(16, 16, 16))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 47, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 47, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -130,6 +183,7 @@ public class IssuancePanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cleanerBox;
     private javax.swing.JLabel cleanerLabel;
     private javax.swing.JTable issuanceTable;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox<String> materialBox;
