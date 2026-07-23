@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.sql.Date;
 
 import java.util.List;
 
@@ -77,6 +79,26 @@ public class IssuanceDAO {
 
     public int getTodayCount() {
         // TODO: implement — count of issuances where date = today, for Dashboard stats
+        String sql =
+                "SELECT COUNT(*) FROM issuances WHERE date_issued = ?";
+
+        try (
+                Connection con = DBConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            ps.setDate(1, Date.valueOf(LocalDate.now()));
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
         return 0;
     }
 
