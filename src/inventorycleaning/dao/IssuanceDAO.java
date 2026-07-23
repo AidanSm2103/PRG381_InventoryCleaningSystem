@@ -43,7 +43,36 @@ public class IssuanceDAO {
 
     public List<Issuance> getRecent(int limit) {
         // TODO: implement — for Dashboard's recent issuances table, ORDER BY date DESC LIMIT ?
-        return null;
+        List<Issuance> issuances = new ArrayList<>();
+
+        String sql =
+                "SELECT * FROM issuances ORDER BY date_issued DESC FETCH FIRST ? ROWS ONLY";
+
+        try (
+                Connection con = DBConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, limit);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                issuances.add(new Issuance(
+                        rs.getInt("id"),
+                        rs.getInt("material_id"),
+                        rs.getInt("cleaner_id"),
+                        rs.getInt("quantity"),
+                        rs.getDate("date_issued").toLocalDate()
+                ));
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return issuances;
     }
 
     public int getTodayCount() {
