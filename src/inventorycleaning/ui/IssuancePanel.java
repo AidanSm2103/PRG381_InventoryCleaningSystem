@@ -10,6 +10,7 @@ import inventorycleaning.dao.MaterialDAO;
 import inventorycleaning.model.Cleaner;
 import inventorycleaning.model.Issuance;
 import inventorycleaning.model.Material;
+import java.util.List;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -58,7 +59,75 @@ public class IssuancePanel extends javax.swing.JPanel {
 
 }
     
+    private void loadMaterials(){
+
+    materialBox.removeAllItems();
+
+    List<Material> materials =
+            materialDAO.getAll();
+
+    for(Material row : materials){
+
+        materialBox.addItem(
+
+                row.getId() + " - " + row.getName()
+
+        );
+
+    }
+
+}
     
+    private void loadCleaners(){
+
+    cleanerBox.removeAllItems();
+
+    List<Cleaner> cleaners =
+            cleanerDAO.getAll();
+
+    for(Cleaner cleaner : cleaners){
+
+        cleanerBox.addItem(
+
+                cleaner.getId()
+                        + " - "
+                        + cleaner.getName()
+
+        );
+
+    }
+
+}
+    private void loadIssuanceHistory(){
+
+    DefaultTableModel model =
+            (DefaultTableModel)
+                    issuanceTable.getModel();
+
+    model.setRowCount(0);
+
+    List<Issuance> list =
+            issuanceDAO.getAll();
+
+    for(Issuance issuance : list){
+
+        model.addRow(new Object[]{
+
+                issuance.getId(),
+
+                issuance.getMaterialId(),
+
+                issuance.getCleanerId(),
+
+                issuance.getQuantity(),
+
+                issuance.getDateIssued()
+
+        });
+
+    }
+
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
