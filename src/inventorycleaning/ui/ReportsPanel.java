@@ -6,6 +6,8 @@ package inventorycleaning.ui;
 import inventorycleaning.dao.IssuanceDAO;
 import inventorycleaning.dao.MaterialDAO;
 import inventorycleaning.model.Issuance;
+import inventorycleaning.model.Material;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -68,7 +70,7 @@ public class ReportsPanel extends javax.swing.JPanel {
     materialUsageTable.setModel(
             new DefaultTableModel(
                     new Object[]{
-                            "Material ID",
+                            "Material",
                             "Total Issued"
                     },0));
 
@@ -92,7 +94,129 @@ public class ReportsPanel extends javax.swing.JPanel {
 
 }
     
+    private void loadInventoryReport() {
+
+    DefaultTableModel model =
+            (DefaultTableModel) inventoryTable.getModel();
+
+    clearTable(model);
+
+    List<Material> materials = materialDAO.getAll();
+
+    for (Material material : materials) {
+
+        model.addRow(new Object[]{
+
+                material.getId(),
+
+                material.getName(),
+
+                material.getQuantity(),
+
+                material.getReorderLevel()
+
+        });
+
+    }
+
+}
     
+    private void loadLowStockReport() {
+
+    DefaultTableModel model =
+            (DefaultTableModel) lowStockTable.getModel();
+
+    clearTable(model);
+
+    List<Material> materials = materialDAO.getAll();
+
+    for (Material material : materials) {
+
+        if (material.getQuantity() <= material.getReorderLevel()) {
+
+            model.addRow(new Object[]{
+
+                    material.getId(),
+
+                    material.getName(),
+
+                    material.getQuantity(),
+
+                    material.getReorderLevel()
+
+            });
+
+        }
+
+    }
+
+}
+    
+    private void loadIssuanceHistoryReport() {
+
+    DefaultTableModel model =
+            (DefaultTableModel) issuanceHistoryTable.getModel();
+
+    clearTable(model);
+
+    List<Issuance> issuances = issuanceDAO.getAll();
+
+    for (Issuance issuance : issuances) {
+
+        model.addRow(new Object[]{
+
+                issuance.getId(),
+
+                issuance.getMaterialId(),
+
+                issuance.getCleanerId(),
+
+                issuance.getQuantity(),
+
+                issuance.getDateIssued()
+
+        });
+
+    }
+
+}
+    
+    private void loadMaterialUsageReport() {
+
+    DefaultTableModel model =
+            (DefaultTableModel) materialUsageTable.getModel();
+
+    clearTable(model);
+
+    List<Material> materials = materialDAO.getAll();
+
+    List<Issuance> issuances = issuanceDAO.getAll();
+
+    for (Material material : materials) {
+
+        int totalIssued = 0;
+
+        for (Issuance issuance : issuances) {
+
+            if (issuance.getMaterialId() == material.getId()) {
+
+                totalIssued += issuance.getQuantity();
+
+            }
+
+        }
+
+        model.addRow(new Object[]{
+
+                material.getName(),
+
+                totalIssued
+
+        });
+
+    }
+
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
