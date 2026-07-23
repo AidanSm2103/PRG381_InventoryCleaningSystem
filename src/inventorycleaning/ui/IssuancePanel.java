@@ -10,7 +10,9 @@ import inventorycleaning.dao.MaterialDAO;
 import inventorycleaning.model.Cleaner;
 import inventorycleaning.model.Issuance;
 import inventorycleaning.model.Material;
+import java.time.LocalDate;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -124,6 +126,129 @@ public class IssuancePanel extends javax.swing.JPanel {
                 issuance.getDateIssued()
 
         });
+
+    }
+
+}
+    private int getSelectedMaterialId() {
+
+    if (materialBox.getSelectedItem() == null) {
+        return -1;
+    }
+
+    String selected = materialBox.getSelectedItem().toString();
+
+    return Integer.parseInt(selected.split(" - ")[0]);
+
+}
+    
+    private int getSelectedCleanerId() {
+
+    if (cleanerBox.getSelectedItem() == null) {
+        return -1;
+    }
+
+    String selected = cleanerBox.getSelectedItem().toString();
+
+    return Integer.parseInt(selected.split(" - ")[0]);
+
+}
+    
+    private void clearForm() {
+
+    if (materialBox.getItemCount() > 0) {
+        materialBox.setSelectedIndex(0);
+    }
+
+    if (cleanerBox.getItemCount() > 0) {
+        cleanerBox.setSelectedIndex(0);
+    }
+
+    qtySpinner.setValue(1);
+
+}
+    
+    private void issueStock() {
+
+    int materialId = getSelectedMaterialId();
+
+    int cleanerId = getSelectedCleanerId();
+
+    int quantity = (Integer) qtySpinner.getValue();
+
+    if (materialId == -1) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Please select a material."
+        );
+
+        return;
+    }
+
+    if (cleanerId == -1) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Please select a cleaner."
+        );
+
+        return;
+    }
+
+    if (quantity <= 0) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Quantity must be greater than zero."
+        );
+
+        return;
+    }
+
+    Issuance issuance = new Issuance(
+
+            0,
+
+            materialId,
+
+            cleanerId,
+
+            quantity,
+
+            LocalDate.now()
+
+    );
+
+    boolean success =
+            issuanceDAO.insert(issuance);
+
+    if (success) {
+
+        JOptionPane.showMessageDialog(
+
+                this,
+
+                "Stock issued successfully."
+
+        );
+
+        loadMaterials();
+
+        loadIssuanceHistory();
+
+        clearForm();
+
+    }
+    else {
+
+        JOptionPane.showMessageDialog(
+
+                this,
+
+                "Unable to issue stock.\nCheck available quantity."
+
+        );
 
     }
 
