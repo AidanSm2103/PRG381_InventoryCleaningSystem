@@ -107,8 +107,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Nav button for dashboard screen
     private void dashboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardButtonActionPerformed
+        System.out.println("The button was clicked");
         CardLayout cl = (CardLayout) contentPanel.getLayout();
         cl.show(contentPanel, CardNames.DASHBOARD);
+        
+        contentPanel.revalidate();
+        contentPanel.repaint();
     }//GEN-LAST:event_dashboardButtonActionPerformed
 
     // Nav button for materials screen

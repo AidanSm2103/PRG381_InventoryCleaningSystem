@@ -19,16 +19,36 @@ public class DashboardPanel extends javax.swing.JPanel {
     }
     
     // Loading and displaying of dashboard data
-    private void loadDashboardData() {
-    MaterialDAO materialDAO = new MaterialDAO();
-    CleanerDAO cleanerDAO = new CleanerDAO();
-    IssuanceDAO issuanceDAO = new IssuanceDAO();
-    
-    totalMaterialsCounterLabel.setText(String.valueOf(materialDAO.getAll().size()));
-    lowStockItemsCounterLabel.setText(String.valueOf(materialDAO.getLowStock().size()));
-    totalCleanersCounterLabel.setText(String.valueOf(cleanerDAO.getAll().size()));
-    issuancesTodayCounterLabel.setText(String.valueOf(issuanceDAO.getTodayCount()));
-    
+public void loadDashboardData() {
+        MaterialDAO materialDAO = new MaterialDAO();
+        CleanerDAO cleanerDAO = new CleanerDAO();
+        IssuanceDAO issuanceDAO = new IssuanceDAO();
+        
+        int matCount = materialDAO.getAll().size();
+        int cleanCount = cleanerDAO.getAll().size();
+        
+        totalMaterialsCounterLabel.setText(String.valueOf(matCount));
+        lowStockItemsCounterLabel.setText(String.valueOf(materialDAO.getLowStock().size()));
+        totalCleanersCounterLabel.setText(String.valueOf(cleanCount));
+        issuancesTodayCounterLabel.setText(String.valueOf(issuanceDAO.getTodayCount()));
+        
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) recentIssuancesTable.getModel();
+        
+        model.setColumnIdentifiers(new Object[]{"ID", "Material ID", "Cleaner ID", "Quantity", "Date"});
+        
+        model.setRowCount(0); 
+        
+        java.util.List<inventorycleaning.model.Issuance> list = issuanceDAO.getAll();
+        
+        for(inventorycleaning.model.Issuance issuance : list){
+            model.addRow(new Object[]{
+                issuance.getId(),
+                issuance.getMaterialId(),
+                issuance.getCleanerId(),
+                issuance.getQuantity(),
+                issuance.getDateIssued()
+            });
+        }
 }
 
     @SuppressWarnings("unchecked")
