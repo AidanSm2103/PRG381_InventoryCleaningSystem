@@ -18,13 +18,22 @@ public class ReportsPanel extends javax.swing.JPanel {
         this.loggedInUser = loggedInUser;
         initComponents();
          materialDAO = new MaterialDAO();
-    issuanceDAO = new IssuanceDAO();
+        issuanceDAO = new IssuanceDAO();
 
     setupTables();
     loadInventoryReport();
     loadLowStockReport();
     loadIssuanceHistoryReport();
     loadMaterialUsageReport();
+    
+    refreshReports();
+
+    this.addComponentListener(new java.awt.event.ComponentAdapter() {
+        @Override
+        public void componentShown(java.awt.event.ComponentEvent evt) {
+            refreshReports();
+        }
+    });
     }
     
     private void setupTables() {

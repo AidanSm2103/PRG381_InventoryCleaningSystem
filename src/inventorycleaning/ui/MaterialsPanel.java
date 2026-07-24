@@ -12,6 +12,14 @@ public class MaterialsPanel extends javax.swing.JPanel {
 
     public MaterialsPanel() {
         initComponents();
+        loadMaterialsData();
+
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                loadMaterialsData();
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

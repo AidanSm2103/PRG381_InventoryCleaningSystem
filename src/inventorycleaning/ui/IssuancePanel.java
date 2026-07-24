@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package inventorycleaning.ui;
 import inventorycleaning.dao.CleanerDAO;
 import inventorycleaning.dao.IssuanceDAO;
@@ -17,10 +13,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
 
-/**
- *
- * @author spinn
- */
 public class IssuancePanel extends javax.swing.JPanel {
 
     private final MaterialDAO materialDAO;
@@ -35,21 +27,26 @@ public class IssuancePanel extends javax.swing.JPanel {
         cleanerDAO = new CleanerDAO();
         issuanceDAO = new IssuanceDAO();
 
-        qtySpinner.setModel(
-                new SpinnerNumberModel(1,1,1000,1));
+        qtySpinner.setModel(new SpinnerNumberModel(1,1,1000,1));
         
         setupTable();
-
         loadMaterials();
-
         loadCleaners();
-
         loadIssuanceHistory();
+        
+    this.addComponentListener(new java.awt.event.ComponentAdapter() {
+        @Override
+        public void componentShown(java.awt.event.ComponentEvent evt) {
+            setupTable();
+            loadMaterials();
+            loadIssuanceHistory();
+        }
+    });
     }
+     
     private void setupTable(){
 
-    DefaultTableModel model =
-            new DefaultTableModel();
+    DefaultTableModel model = new DefaultTableModel();
 
     model.addColumn("ID");
     model.addColumn("Material ID");
@@ -58,95 +55,59 @@ public class IssuancePanel extends javax.swing.JPanel {
     model.addColumn("Date");
 
     issuanceTable.setModel(model);
-
 }
     
     private void loadMaterials(){
+        materialBox.removeAllItems();
 
-    materialBox.removeAllItems();
+        List<Material> materials = materialDAO.getAll();
 
-    List<Material> materials =
-            materialDAO.getAll();
-
-    for(Material row : materials){
-
-        materialBox.addItem(
-
-                row.getId() + " - " + row.getName()
-
-        );
-
-    }
-
+        for(Material row : materials){
+            materialBox.addItem(row.getId() + " - " + row.getName());
+        }
 }
     
     private void loadCleaners(){
+        cleanerBox.removeAllItems();
 
-    cleanerBox.removeAllItems();
+        List<Cleaner> cleaners = cleanerDAO.getAll();
 
-    List<Cleaner> cleaners =
-            cleanerDAO.getAll();
-
-    for(Cleaner cleaner : cleaners){
-
-        cleanerBox.addItem(
-
-                cleaner.getId()
-                        + " - "
-                        + cleaner.getName()
-
-        );
-
-    }
+        for(Cleaner cleaner : cleaners){
+            cleanerBox.addItem(cleaner.getId() + " - " + cleaner.getName());
+        }
 
 }
     private void loadIssuanceHistory(){
-
-    DefaultTableModel model =
-            (DefaultTableModel)
-                    issuanceTable.getModel();
-
+    DefaultTableModel model = (DefaultTableModel) issuanceTable.getModel();
     model.setRowCount(0);
-
-    List<Issuance> list =
-            issuanceDAO.getAll();
+    
+    List<Issuance> list = issuanceDAO.getAll();
 
     for(Issuance issuance : list){
-
         model.addRow(new Object[]{
-
                 issuance.getId(),
-
                 issuance.getMaterialId(),
-
                 issuance.getCleanerId(),
-
                 issuance.getQuantity(),
-
                 issuance.getDateIssued()
-
         });
-
     }
 
 }
     private int getSelectedMaterialId() {
-
-    if (materialBox.getSelectedItem() == null) {
-        return -1;
-    }
+        if (materialBox.getSelectedItem() == null) {
+            return -1;
+        }
 
     String selected = materialBox.getSelectedItem().toString();
 
     return Integer.parseInt(selected.split(" - ")[0]);
-
 }
     
     private int getSelectedCleanerId() {
-
-    if (cleanerBox.getSelectedItem() == null) {
-        return -1;
-    }
+        if (cleanerBox.getSelectedItem() == null) {
+            return -1;
+        }
 
     String selected = cleanerBox.getSelectedItem().toString();
 
@@ -156,38 +117,32 @@ public class IssuancePanel extends javax.swing.JPanel {
     
     private void clearForm() {
 
-    if (materialBox.getItemCount() > 0) {
-        materialBox.setSelectedIndex(0);
-    }
+        if (materialBox.getItemCount() > 0) {
+            materialBox.setSelectedIndex(0);
+        }
 
-    if (cleanerBox.getItemCount() > 0) {
-        cleanerBox.setSelectedIndex(0);
-    }
+        if (cleanerBox.getItemCount() > 0) {
+            cleanerBox.setSelectedIndex(0);
+        }
 
     qtySpinner.setValue(1);
-
 }
     
     private void issueStock() {
+        int materialId = getSelectedMaterialId();
+        int cleanerId = getSelectedCleanerId();
+        int quantity = (Integer) qtySpinner.getValue();
 
-    int materialId = getSelectedMaterialId();
-
-    int cleanerId = getSelectedCleanerId();
-
-    int quantity = (Integer) qtySpinner.getValue();
-
-    if (materialId == -1) {
-
-        JOptionPane.showMessageDialog(
+        if (materialId == -1) {
+            JOptionPane.showMessageDialog(
                 this,
                 "Please select a material."
-        );
+            );
 
         return;
     }
 
     if (cleanerId == -1) {
-
         JOptionPane.showMessageDialog(
                 this,
                 "Please select a cleaner."
@@ -197,7 +152,6 @@ public class IssuancePanel extends javax.swing.JPanel {
     }
 
     if (quantity <= 0) {
-
         JOptionPane.showMessageDialog(
                 this,
                 "Quantity must be greater than zero."
@@ -207,59 +161,34 @@ public class IssuancePanel extends javax.swing.JPanel {
     }
 
     Issuance issuance = new Issuance(
-
             0,
-
             materialId,
-
             cleanerId,
-
             quantity,
-
             LocalDate.now()
-
     );
 
     boolean success =
             issuanceDAO.insert(issuance);
 
     if (success) {
-
         JOptionPane.showMessageDialog(
-
                 this,
-
                 "Stock issued successfully."
-
         );
 
         loadMaterials();
-
         loadIssuanceHistory();
-
         clearForm();
-
     }
     else {
-
         JOptionPane.showMessageDialog(
-
                 this,
-
                 "Unable to issue stock.\nCheck available quantity."
-
         );
-
     }
-
 }
     
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -375,8 +304,6 @@ public class IssuancePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void issueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_issueButtonActionPerformed
-        // TODO add your handling code here:
-        //issue stock button 
         issueStock();
     }//GEN-LAST:event_issueButtonActionPerformed
 

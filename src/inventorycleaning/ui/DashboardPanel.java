@@ -9,6 +9,13 @@ public class DashboardPanel extends javax.swing.JPanel {
     public DashboardPanel() {
         initComponents();
         loadDashboardData();
+        
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+        @Override
+        public void componentShown(java.awt.event.ComponentEvent evt) {
+            loadDashboardData();
+        }
+    });
     }
     
     // Loading and displaying of dashboard data
@@ -21,6 +28,7 @@ public class DashboardPanel extends javax.swing.JPanel {
     lowStockItemsCounterLabel.setText(String.valueOf(materialDAO.getLowStock().size()));
     totalCleanersCounterLabel.setText(String.valueOf(cleanerDAO.getAll().size()));
     issuancesTodayCounterLabel.setText(String.valueOf(issuanceDAO.getTodayCount()));
+    
 }
 
     @SuppressWarnings("unchecked")

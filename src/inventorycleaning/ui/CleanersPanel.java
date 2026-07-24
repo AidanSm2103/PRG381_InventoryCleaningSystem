@@ -1,26 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package inventorycleaning.ui;
 import javax.swing.table.DefaultTableModel;
 import inventorycleaning.dao.CleanerDAO;
 import inventorycleaning.model.Cleaner;
 import java.util.List;
 
-/**
- *
- * @author spinn
- */
 public class CleanersPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form CleanersPanel
-     */
     public CleanersPanel() {
         initComponents();
 
         loadCleanersToTable(); 
+        
+    this.addComponentListener(new java.awt.event.ComponentAdapter() {
+        @Override
+        public void componentShown(java.awt.event.ComponentEvent evt) {
+            loadCleanersToTable();
+        }
+    });
     }
     
     private void loadCleanersToTable() {
