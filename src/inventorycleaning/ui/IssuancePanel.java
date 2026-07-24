@@ -40,6 +40,7 @@ public class IssuancePanel extends javax.swing.JPanel {
             setupTable();
             loadMaterials();
             loadIssuanceHistory();
+            loadCleaners();
         }
     });
     }
