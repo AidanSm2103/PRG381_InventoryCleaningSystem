@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Mon Jul 13 16:39:29 SAST 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.17.1.0 - (1913217): instance a816c00e-019f-5beb-342f-000000bdcad0 
+on database directory C:\Users\kaspe\Documents\GitHub\PRG381\PRG381_InventoryCleaningSystem\cleaninginventory with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@50b4d649 
+Loaded from file:/C:/Users/kaspe/Downloads/db-derby-10.17.1.0-bin/db-derby-10.17.1.0-bin/lib/derby.jar
+java.vendor=Eclipse Adoptium
+java.runtime.version=26.0.1+8
+user.dir=C:\Users\kaspe\Documents\GitHub\PRG381\PRG381_InventoryCleaningSystem
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
